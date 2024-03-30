@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    
+<body>
+
+    <div class="wrapper">
+        <div class="login_box">
+            <div class="login-header">
+                <span>Login</span>
+            </div>
+
+            <div class="input_box">
+                <input type="text" id="username" class="input-field" required>
+                <label for="username" class="label">Email</label>
+                <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input_box">
+                <input type="password" id="password" class="input-field" required>
+                <label for="password" class="label">Password</label>
+                <i class="bx bx-lock-alt icon"></i>
+            </div>
+            <p id="errorMessage" style="color: red;"></p>
+            <div class="remember-forgot">
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                
+                <div class="forgot">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            <div class="input_box">
+                <input type="submit" class="input-submit" value="Login" id="loginButton"> <!-- Добавяме ID на бутона за логин -->
+            </div>
+
+            <div class="register">
+                <span>Don`t have an account <a href="#" id="registerLink">Register</a></span>
+            </div>
+            
+            <div id="registrationMessage" style="display: none;">
+                <p id="registrationSuccessMessage" style="color: green;"></p>
+                <p id="registrationErrorMessage" style="color: red;"></p>
+            </div>
+            
+            <div id="registerForm" style="display: none;">
+                <h2>Register</h2>
+                <form id="registerFormContent">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" required><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                    <label for="phone">Phone:</label><br>
+                    <input type="text" id="phone" name="phone" required><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="passwordd" name="password" required><br><br>
+                    <button type="submit" class="input-submit">Register</button>
+                    <button type="button" id="cancelRegister" class="input-submit">Cancel</button>
+                </form>
+            </div>
+           
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    var loginButton = document.getElementById('loginButton');
+
+    loginButton.addEventListener('click', function () {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            } else if (data && data.message) {
+                var errorMessageElement = document.getElementById('errorMessage');
+                errorMessageElement.textContent = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var registerLink = document.getElementById('registerLink');
+    var registerForm = document.getElementById('registerForm');
+
+    registerLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        if (registerForm.style.display === 'none') {
+            registerForm.style.display = 'block';
+        } else {
+            registerForm.style.display = 'none';
+        }
+    });
+
+    var cancelRegisterButton = document.getElementById('cancelRegister');
+
+    cancelRegisterButton.addEventListener('click', function () {
+        registerForm.style.display = 'none';
+    });
+
+    var registerFormContent = document.getElementById('registerFormContent');
+
+    registerFormContent.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+        var password = document.getElementById('passwordd').value;
+
+        fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                phone: phone,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+    if (data.message === 'created successfully') {
+        // Показване на съобщение за успешно създаден акаунт
+        var registrationSuccessMessage = document.getElementById('registrationSuccessMessage');
+        registrationSuccessMessage.textContent = 'Account created successfully!';
+        var registrationMessage = document.getElementById('registrationMessage');
+        registrationMessage.style.display = 'block';
+        registerForm.style.display = 'none';
+    } else {
+        // Ако не е успешно, показва съобщение за грешка
+        var registrationErrorMessage = document.getElementById('registrationErrorMessage');
+        registrationErrorMessage.textContent = 'An error occurred during registration.';
+    }
+})
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+
+
+     </script>
+</body>
+</html>

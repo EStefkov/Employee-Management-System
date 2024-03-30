@@ -18,6 +18,8 @@ const index = (req,res,next) =>{
 // show single employee
 const show = (req ,res,next) => {
     let employeeId = req.body.employeeId
+    let searchIdOrEmail = req.body.searchIdOrEmail;
+    
     Employee.findById(employeeId)
     .then(response => {
         res.json({

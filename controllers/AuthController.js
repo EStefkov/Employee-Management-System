@@ -31,6 +31,7 @@ const registar = (req, res, next)=>{
 }
 
 const login = (req, res, next) => {
+    console.log("TUKA SUM")
     var username = req.body.username
     var password = req.body.password
 
@@ -41,28 +42,34 @@ const login = (req, res, next) => {
                 if(err){
                     res.json({
                         error: err
-                    })
+                    });
                 }
                 if(result){
                     let token = jwt.sign({name: user.name},'verySecretValue',{expiresIn: '1h'})
+                    res.json({ redirectUrl: '/homePage.html', token });
+                    // Ако има успешно влизане, пренасочете потребителя към друг сайт
+                    //res.redirect('homePage.html'); // Променете URL адреса според вашите нужди
+                } else {
                     res.json({
-                        message:'Login successful!',
-                        token
-                    })
-                }else {
-                    res.json({
-                        message:'Password doesn`t matched!'
-                    })
+                        message: 'Password doesn`t matched!'
+                    });
                 }
-            })
-        }else {
-            res.json({
+            });
+        } else {
+            res.status(401).json({
                 message: 'No user found'
-            })
+            });
         }
     })
-}
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({
+            error: 'Internal Server Error'
+        });
+    });
+};
+
 
 module.exports  = {
-    registar
+    registar,login
 }

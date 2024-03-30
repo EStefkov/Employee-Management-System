@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="stylehomePage.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Employee Management</h1>
+        <div class="nav-buttons">
+            <div class="input_box">
+                <button class="input-submit" id='showEmployee'>Show All Employees</button>
+                <button class="input-submit" id='showEmployeeById'>Show Employee by ID</button>
+                <button class="input-submit" id='addNewEmployee'>Add New Employee</button>
+            </div>
+            <button class="exit-button" id="exitButton">Exit</button>
+        </div>
+        
+        
+    </div>
+    
+    <div id="employeeList"></div>
+
+    <div id="addEmployeeForm" style="display: none;">
+        <h2>Add New Employee</h2>
+        <form id="employeeForm">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="designation">Designation:</label><br>
+            <input type="text" id="designation" name="designation"><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br>
+            <label for="phone">Phone:</label><br>
+            <input type="text" id="phone" name="phone"><br>
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="age"><br>
+            <label for="avatar">Avatar:</label><br>
+            <input type="file" id="avatar" name="avatar"><br><br>
+            <button type="submit" class="input-submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="searchEmployeeForm" style="display: none;">
+        <h2>Search Employee</h2>
+        <form id="searchForm">
+            <label for="searchId">Employee ID:</label><br>
+            <input type="text" id="searchId" name="searchId"><br>
+            <button type="submit" class="input-submit">Search</button>
+        </form>
+
+        <div id="result"></div>
+
+        <div id="updateEmployeeForm" style="display: none;">
+            <h2>Update Employee</h2>
+            <form id="updateForm">
+                <label for="updateName">Name:</label><br>
+                <input type="text" id="updateName" name="updateName"><br>
+                <label for="updateDesignation">Designation:</label><br>
+                <input type="text" id="updateDesignation" name="updateDesignation"><br>
+                <label for="updateEmail">Email:</label><br>
+                <input type="email" id="updateEmail" name="updateEmail"><br>
+                <label for="updatePhone">Phone:</label><br>
+                <input type="text" id="updatePhone" name="updatePhone"><br>
+                <label for="updateAge">Age:</label><br>
+                <input type="number" id="updateAge" name="updateAge"><br>
+                <button type="submit" class="input-submit">Update</button>
+            </form>
+        </div>
+    </div>
+    <script src="./scripts/homeScripts.js"></script>
+    <script>
+        document.getElementById('exitButton').addEventListener('click', function() {
+            window.location.href = '/'; // Пренасочване към началната страница
+        });
+    </script>
+
+</body>
+</html>
